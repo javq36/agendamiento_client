@@ -19,7 +19,6 @@ body{
 }
 
 
-
 .container-slider {
   max-width: 700px;
   height: 500px;
@@ -33,13 +32,7 @@ body{
     margin: 100px 10px 0;
   }
 }
-.slide {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  opacity: 0;
-  transition: opacity ease-in-out 0.4s;
-}
+
 .slide img {
   width: 100%;
   height: 100%;
@@ -78,7 +71,6 @@ body{
   transform: translateY(-60%);
 }
 
-
 .container-dots {
   position: absolute;
   bottom: 10px;
@@ -86,6 +78,7 @@ body{
   transform: translateX(-50%);
   display: flex;
 }
+
 .dot {
   width: 20px;
   height: 20px;
@@ -96,4 +89,12 @@ body{
 }
 .dot.active {
   background: rgb(32, 32, 32);
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* opacity: 0; */
+  transition: opacity ease-in-out 0.4s;
 }
