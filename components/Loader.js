@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Image from "next/image";
-import banner from "../assets/banner1.jpg";
+import loader from "../assets/loader2.gif";
 
 
 export function Loader() {
     return (
-        <div class="loader">
-            <Image src={banner} style={{}} />
+        <div className="loader">
+            <Image src={loader} style={{}} />
         </div>
     );
 }
