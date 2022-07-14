@@ -25,7 +25,7 @@ export const SelectFieldInputOnChange = ({
     defaultValue,
     options,
     onChange,
-   /*  value, */
+    value, 
     /* disabled */
   }) => {
     return (
@@ -39,12 +39,13 @@ export const SelectFieldInputOnChange = ({
             sx={selectStyle}
             label={label}
             type={type}
+            variant={"filled"}
             {...field}
             onChange={onChange}
             error={errors}
             helperText={helperText}
-          /*   value={value}
-            disabled={disabled} */
+            value={value}
+           // disabled={disabled} 
           >
             {options.map((option) => (
               <MenuItem key={option.id} value={option.id}>

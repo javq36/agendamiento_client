@@ -9,25 +9,28 @@ import { Slider } from '../components/Slider';
 // navbar
 import { Navbar } from '../components/Navbar';
 
+// loader
+import { Loader } from '../components/Loader'
+
 // formulario
 import { TextFieldInput } from '../components/shared/TextInput';
 
-import { SelectFieldInputOnChange } from '../components/shared/SelectInput/index';
+import { SelectFieldInputOnChange } from '../components/shared/SelectInput/';
 // controladores y validaciones del formulario
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // animaciones
-import { motion } from "framer-motion"
+import { motion, useScroll } from "framer-motion"
 import Button from '@mui/material/Button'
 import { usStates } from "../constants/usStates";
 
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 
+// validamos que la entrada solo sea de digitos
 const digitsOnly = (value) => /^\d+$/.test(value)
-
-
 
 const formularioSchema = yup
   .object({
@@ -49,7 +52,7 @@ const formularioSchema = yup
       .string()
       .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
       .required("Por favor ingrese el Numero Telefonico")
-      .matches(/^\w{}/, "Porfavor Ingrese mas de 8 Digitos"),
+      .matches(/^\w{8}/, "Porfavor Ingrese mas de 8 Digitos"),
     marca: yup
       .string()
       .required("Por favor ingrese la Marca del Vehiculo"),
@@ -68,9 +71,6 @@ const formularioSchema = yup
     sucursal: yup //select
       .string()
       .required("Por favor ingrese la Sucursal"),
-    pruebaw: yup
-      .string()
-      .required("www"),
   })
   .required();
 
@@ -90,80 +90,98 @@ function index() {
     setAge(event.target.value);
   };
 
+
   // al momento de precionar el boton hace esto
   const formSubmitHandler = async (data) => {
     if (Object.keys(errors).length === 0) {
+      data.pruebaw = age ?? 'no llego';
       console.log(data);
     }
   };
 
+
+
   const onChange = (e) => {
     console.log(e.value);
   }
+  
 
   return (
     <div>
       <Navbar />
       <Container maxWidth="md" style={{ marginBottom: '30px' }}>
-        <Paper elevation={4} style={{ marginTop: 15, backgroundColor: 'black' }}>
-          <Slider />
-        </Paper>
+        <motion.div
+          animate={{ x: [-4000, 0], opacity: 2 }}
+          transition={{ type: "spring", stiffness: 100, duration: 2 }}
+        >
+          <Paper elevation={4} style={{ marginTop: 15, backgroundColor: 'black' }}>
+            <Slider />
+          </Paper>
+        </motion.div>
       </Container>
       <Container maxWidth="sm">
-        <Paper elevation={4} style={{ marginTop: 15 }}>
-          <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Pide tu Cita</h2>
-          <SelectFieldInputOnChange 
-             name={"pruebaw"}
-             control={control}
-             onChange={handleChange}
-             label={"Frecuencia de pago"}
-             type={"text"}
-             errors={!!errors.pruebaw}
-             helperText={
-               errors.pruebaw ? errors.pruebaw?.message : null
-             }
-             defaultValue={""}
-             options={usStates}
-             /* value={frecuency} */
-            /*  disabled={unique}  */
-          />
-          <TextFieldInput name={'placa'} control={control} label={'Placa'} type={'text'} errors={!!errors.placa}
-            helperText={errors.placa ? errors.placa?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'ncedula'} control={control} label={'Numero de Cédula'} type={'text'} errors={!!errors.ncedula}
-            helperText={errors.ncedula ? errors.ncedula?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'nombreyapellido'} control={control} label={'Nombre y Apellido'} type={'text'} errors={!!errors.nombreyapellido}
-            helperText={errors.nombreyapellido ? errors.nombreyapellido?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'celular'} control={control} label={'Celular'} type={'text'} errors={!!errors.celular}
-            helperText={errors.celular ? errors.celular?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'marca'} control={control} label={'Marca'} type={'text'} errors={!!errors.marca}
-            helperText={errors.marca ? errors.marca?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'modelov'} control={control} label={'Modelo del Vehículo'} type={'text'} errors={!!errors.modelov}
-            helperText={errors.modelov ? errors.modelov?.message : null}
-            defaultValue={""} />
+        <motion.div
+          animate={{ y: [4000, 0], opacity: 2 }}
+          transition={{ type: "spring", stiffness: 100, duration: 3 }}
+        >
+          <Paper elevation={4} style={{ marginTop: 15 , marginBottom: 20}}>
+            <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Pide tu Cita</h2>
+            <TextFieldInput name={'placa'} control={control} label={'Placa'} type={'text'} errors={!!errors.placa}
+              helperText={errors.placa ? errors.placa?.message : null}
+              defaultValue={""} />
+            <div style={{display: 'none'}}>
+              <TextFieldInput name={'ncedula'} control={control} label={'Numero de Cédula'} type={'text'} errors={!!errors.ncedula}
+                helperText={errors.ncedula ? errors.ncedula?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'nombreyapellido'} control={control} label={'Nombre y Apellido'} type={'text'} errors={!!errors.nombreyapellido}
+                helperText={errors.nombreyapellido ? errors.nombreyapellido?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'celular'} control={control} label={'Celular'} type={'text'} errors={!!errors.celular}
+                helperText={errors.celular ? errors.celular?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'marca'} control={control} label={'Marca'} type={'text'} errors={!!errors.marca}
+                helperText={errors.marca ? errors.marca?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'modelov'} control={control} label={'Modelo del Vehículo'} type={'text'} errors={!!errors.modelov}
+                helperText={errors.modelov ? errors.modelov?.message : null}
+                defaultValue={""} />
 
-          <TextFieldInput name={'tipodeservicio'} control={control} label={'Tipo de Servicio'} type={'text'} errors={!!errors.tipodeservicio}
-            helperText={errors.tipodeservicio ? errors.tipodeservicio?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'tipoajuste'} control={control} label={'Tipo de Ajuste'} type={'text'} errors={!!errors.tipoajuste}
-            helperText={errors.tipoajuste ? errors.tipoajuste?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'nota'} control={control} label={'Nota'} type={'text'} errors={!!errors.nota}
-            helperText={errors.nota ? errors.nota?.message : null}
-            defaultValue={""} />
-          <TextFieldInput name={'sucursal'} control={control} label={'Sucursal'} type={'text'} errors={!!errors.sucursal}
-            helperText={errors.sucursal ? errors.sucursal?.message : null}
-            defaultValue={""} />
-          <Container maxWidth="sm">
-            <Button onClick={handleSubmit(formSubmitHandler)} variant="contained" style={{ width: "100%", marginBottom: 12, backgroundColor: '#2f335e' }} endIcon={<SendIcon />} >
-              Enviar
-            </Button>
-          </Container>
-        </Paper>
+              <TextFieldInput name={'tipodeservicio'} control={control} label={'Tipo de Servicio'} type={'text'} errors={!!errors.tipodeservicio}
+                helperText={errors.tipodeservicio ? errors.tipodeservicio?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'tipoajuste'} control={control} label={'Tipo de Ajuste'} type={'text'} errors={!!errors.tipoajuste}
+                helperText={errors.tipoajuste ? errors.tipoajuste?.message : null}
+                defaultValue={""} />
+              <TextFieldInput name={'nota'} control={control} label={'Nota'} type={'text'} errors={!!errors.nota}
+                helperText={errors.nota ? errors.nota?.message : null}
+                defaultValue={""} />
+              <SelectFieldInputOnChange
+                name={"pruebaw"}
+                control={control}
+                onChange={handleChange}
+                label={"Frecuencia de pago"}
+                type={"text"}
+                errors={!!errors.pruebaw}
+                helperText={
+                  errors.pruebaw ? errors.pruebaw?.message : null
+                }
+                defaultValue={""}
+                options={usStates}
+                value={age}
+                required
+              /*  disabled={unique}  */
+              />
+              <TextFieldInput name={'sucursal'} control={control} label={'Sucursal'} type={'text'} errors={!!errors.sucursal}
+                helperText={errors.sucursal ? errors.sucursal?.message : null}
+                defaultValue={""} />
+              <Container maxWidth="sm">
+                <Button onClick={handleSubmit(formSubmitHandler)} variant="contained" style={{ width: "100%", marginBottom: 12, backgroundColor: '#2f335e' }} endIcon={<SendIcon />} >
+                  Enviar
+                </Button>
+              </Container>
+            </div>
+          </Paper>
+        </motion.div>
       </Container>
 
     </div >
