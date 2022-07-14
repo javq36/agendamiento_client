@@ -11,7 +11,7 @@ export function Slider() {
       <div key={1}>
         <Image src={cat} width={600} height={250} style={{}}/>
       </div>
-      <div key={2}>
+      <div key={2}>sffsf
         <Image src={cat} width={600} height={250} style={{}}/>
       </div>
       <div key={3}>
