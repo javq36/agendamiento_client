@@ -2,26 +2,21 @@ import * as React from 'react';
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import SendIcon from '@mui/icons-material/Send';
 
 // Slider o carrousel responsive
-/* import { Slider } from '../components/shared/Slider'; */
 import { Slider } from '../components/Slider';
-
 // navbar
 import { Navbar } from '../components/Navbar';
 
 // formulario
 import { TextFieldInput } from '../components/shared/TextInput';
+
+import { SelectFieldInputOnChange } from '../components/shared/SelectInput';
+// controladores y validaciones del formulario
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import SendIcon from '@mui/icons-material/Send';
-import FormControl from '@mui/material/FormControl';
 
 // animaciones
 import { motion } from "framer-motion"
@@ -33,26 +28,17 @@ const digitsOnly = (value) => /^\d+$/.test(value)
 
 
 
-const selectStyle = {
-  width: '94%',
-  margin: '3%',
-  padding: '3px',
-  border: '10px',
-  borderRadius: '10px',
-  marginBottom: '5px',
-  marginTop: '4px',
-};
-
 const formularioSchema = yup
   .object({
     placa: yup
       .string()
       .required("Por favor ingrese el Numero de la Placa")
-      .max(6, "Ingrese maximo 6 digitos"),
+      .min(6, "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana")
+      .max(7, "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"),
     ncedula: yup
       .string()
-      .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
       .required("Por favor ingrese el Numero de la Cedula")
+      .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
       .max(10, "Ingrese maximo 10 digitos"),
     nombreyapellido: yup
       .string()
@@ -62,28 +48,28 @@ const formularioSchema = yup
       .string()
       .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
       .required("Por favor ingrese el Numero Telefonico")
-      .matches(/^\w{8}/, "Porfavor Ingrese mas de 8 Digitos"),
+      .matches(/^\w{}/, "Porfavor Ingrese mas de 8 Digitos"),
     marca: yup
       .string()
       .required("Por favor ingrese la Marca del Vehiculo"),
     modelov: yup
       .string()
       .required("Por favor ingrese el Tipo del Modelo"),
-    tipodeservicio: yup
+    tipodeservicio: yup //select
       .string()
       .required("Por favor ingrese el Tipo del Servicio"),
-    tipoajuste: yup
+    tipoajuste: yup //select
       .string()
       .required("Por favor ingrese el Tipo de Ajustes"),
     nota: yup
       .string()
       .required("Por favor ingrese la Nota"),
-    sucursal: yup
+    sucursal: yup //select
       .string()
       .required("Por favor ingrese la Sucursal"),
     prueba: yup
       .string()
-      .required("Por favor ingrese la Sucursal"),
+      .required("www"),
   })
   .required();
 
@@ -110,37 +96,27 @@ function index() {
     }
   };
 
-
-
   return (
     <div>
       <Navbar />
       <Container maxWidth="md" style={{ marginBottom: '30px' }}>
-        <Paper elevation={4} style={{ marginTop: 15 }}>
+        <Paper elevation={4} style={{ marginTop: 15, backgroundColor: 'black' }}>
           <Slider />
         </Paper>
       </Container>
-      <Container maxWidth="sm" style={{ marginBottom: '30px' }}>
+      <Container maxWidth="sm">
         <Paper elevation={4} style={{ marginTop: 15 }}>
           <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Pide tu Cita</h2>
-          <FormControl sx={selectStyle}>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-            <Select
+          <SelectFieldInputOnChange 
               name={'prueba'}
-              value={age}
               control={control} 
-              label={'prueba'} 
-              type={'select'}
-              variant="filled"
-              onChange={handleChange}
+              label={'prueba'}
               errors={!!errors.prueba}
               helperText={errors.prueba ? errors.prueba?.message : null}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+              defaultValue={"www"}
+              onChange={handleChange}
+              value={age}     
+          />
           <TextFieldInput name={'placa'} control={control} label={'Placa'} type={'text'} errors={!!errors.placa}
             helperText={errors.placa ? errors.placa?.message : null}
             defaultValue={""} />

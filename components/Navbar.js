@@ -12,6 +12,7 @@ import Button from '@mui/material/Button'
 
 
 
+
 export function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -29,7 +30,10 @@ export function Navbar() {
             <Typography variant="h6"  component="div" sx={{ flexGrow: 1 }}>
            
             </Typography>
-            <Button color="inherit" >Contactanos</Button>
+            <Typography variant="h6" color="initial">
+              <a href="" className='contactanos'>Contáctanos</a>
+            </Typography>
+         
           </Toolbar>
         </Container>
       </AppBar>
