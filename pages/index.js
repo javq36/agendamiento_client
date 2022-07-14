@@ -12,7 +12,7 @@ import { Navbar } from '../components/Navbar';
 // formulario
 import { TextFieldInput } from '../components/shared/TextInput';
 
-import { SelectFieldInputOnChange } from '../components/shared/SelectInput';
+import { SelectFieldInputOnChange } from '../components/shared/SelectInput/index';
 // controladores y validaciones del formulario
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,6 +21,7 @@ import * as yup from 'yup';
 // animaciones
 import { motion } from "framer-motion"
 import Button from '@mui/material/Button'
+import { usStates } from "../constants/usStates";
 
 
 
@@ -67,7 +68,7 @@ const formularioSchema = yup
     sucursal: yup //select
       .string()
       .required("Por favor ingrese la Sucursal"),
-    prueba: yup
+    pruebaw: yup
       .string()
       .required("www"),
   })
@@ -96,6 +97,10 @@ function index() {
     }
   };
 
+  const onChange = (e) => {
+    console.log(e.value);
+  }
+
   return (
     <div>
       <Navbar />
@@ -108,14 +113,19 @@ function index() {
         <Paper elevation={4} style={{ marginTop: 15 }}>
           <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Pide tu Cita</h2>
           <SelectFieldInputOnChange 
-              name={'prueba'}
-              control={control} 
-              label={'prueba'}
-              errors={!!errors.prueba}
-              helperText={errors.prueba ? errors.prueba?.message : null}
-              defaultValue={"www"}
-              onChange={handleChange}
-              value={age}     
+             name={"pruebaw"}
+             control={control}
+             onChange={handleChange}
+             label={"Frecuencia de pago"}
+             type={"text"}
+             errors={!!errors.pruebaw}
+             helperText={
+               errors.pruebaw ? errors.pruebaw?.message : null
+             }
+             defaultValue={""}
+             options={usStates}
+             /* value={frecuency} */
+            /*  disabled={unique}  */
           />
           <TextFieldInput name={'placa'} control={control} label={'Placa'} type={'text'} errors={!!errors.placa}
             helperText={errors.placa ? errors.placa?.message : null}
