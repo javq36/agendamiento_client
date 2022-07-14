@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import imglogo from '../../assets/w.png';
+/* import imglogo from '../../assets/w.png'; */
+import imglogo from '../assets/w.png';
 import Image from 'next/image'
 import Button from '@mui/material/Button'
 

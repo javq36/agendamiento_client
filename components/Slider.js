@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import Image from "next/image";
-import cat from "../../assets/gato.jpg";
+import cat from "../assets/gato.jpg";
 
 export function Slider() {
   return (
@@ -11,7 +10,7 @@ export function Slider() {
       <div key={1}>
         <Image src={cat} width={600} height={250} style={{}}/>
       </div>
-      <div key={2}>sffsf
+      <div key={2}>
         <Image src={cat} width={600} height={250} style={{}}/>
       </div>
       <div key={3}>

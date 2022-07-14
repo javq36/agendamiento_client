@@ -4,14 +4,14 @@ import Paper from '@mui/material/Paper';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // Slider o carrousel responsive
-import { Slider } from './components/Slider'
-
+/* import { Slider } from '../components/shared/Slider'; */
+import { Slider } from '../components/Slider';
 
 // navbar
-import { Navbar } from './components/Navbar';
+import { Navbar } from '../components/Navbar';
 
 // formulario
-import { TextFieldInput } from './components/shared/TextInput';
+import { TextFieldInput } from '../components/shared/TextInput';
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
