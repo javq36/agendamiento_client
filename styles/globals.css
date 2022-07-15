@@ -124,16 +124,26 @@ body{
   justify-content: center;
   align-items: center;
   z-index: 20;
+  animation: vanish 3.3s ease forwards;
 }
 
-.disppear {
-  animation: vanish 1s ease forwards;
-}
 
 @keyframes vanish {
   100% {
       opacity: 0;
       visibility: hidden;
-      animation-delay: 1s;
+      animation-delay: 0s;
   }
+  70% {
+    opacity: 1;
+}
+}
+
+
+.none{
+  display: none;
+}
+
+.block{
+  display: block;
 }

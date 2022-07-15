@@ -20,6 +20,7 @@ import { SelectFieldInputOnChange } from '../components/shared/SelectInput/';
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { PropTypes } from 'react'
 
 // animaciones
 import { motion, useScroll } from "framer-motion"
@@ -86,10 +87,14 @@ function index() {
   });
 
   const [age, setAge] = React.useState('');
+  const [oculto, setOculto] = React.useState('none');
+
+  const [displayboton, setDisplayboton] = React.useState('true');
+
+
   const handleChange = (event) => {
     setAge(event.target.value);
   };
-
 
   // al momento de precionar el boton hace esto
   const formSubmitHandler = async (data) => {
@@ -98,13 +103,10 @@ function index() {
       console.log(data);
     }
   };
-
-
-
-  const onChange = (e) => {
-    console.log(e.value);
-  }
-  
+  const formSearchHandler = async (data) => {
+    setOculto('block');
+    setDisplayboton('none')
+  }; 
 
   return (
     <div>
@@ -112,7 +114,7 @@ function index() {
       <Container maxWidth="md" style={{ marginBottom: '30px' }}>
         <motion.div
           animate={{ x: [-4000, 0], opacity: 2 }}
-          transition={{ type: "spring", stiffness: 100, duration: 2 }}
+          transition={{ type: "spring", stiffness: 100, duration: 4 }}
         >
           <Paper elevation={4} style={{ marginTop: 15, backgroundColor: 'black' }}>
             <Slider />
@@ -122,14 +124,22 @@ function index() {
       <Container maxWidth="sm">
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}
-          transition={{ type: "spring", stiffness: 100, duration: 3 }}
+          transition={{ type: "spring", stiffness: 100, duration: 4 }}
         >
-          <Paper elevation={4} style={{ marginTop: 15 , marginBottom: 20}}>
-            <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Pide tu Cita</h2>
-            <TextFieldInput name={'placa'} control={control} label={'Placa'} type={'text'} errors={!!errors.placa}
-              helperText={errors.placa ? errors.placa?.message : null}
-              defaultValue={""} />
-            <div style={{display: 'none'}}>
+          <Paper elevation={4} style={{ marginTop: 15, marginBottom: 30, paddingBottom: 20 }}>
+            <h3 style={{ textAlign: 'center', paddingTop: '20px', marginBottom: '0px' }}>Agenda tu Cita</h3>
+            <div>
+              <TextFieldInput name={'placa'} control={control} label={'Numero de Placa'} type={'text'} errors={!!errors.placa}
+                helperText={errors.placa ? errors.placa?.message : null}
+                defaultValue={""} />
+              <Container maxWidth="sm">
+                <Button onClick={(formSearchHandler)} variant="contained" style={{ display: displayboton , width: "100%", marginBottom: 12, backgroundColor: '#2f335e' }} endIcon={<SendIcon />} >
+                  Buscar
+                </Button>
+              </Container>
+            </div>
+            
+            <div className={oculto} id={oculto}>
               <TextFieldInput name={'ncedula'} control={control} label={'Numero de Cédula'} type={'text'} errors={!!errors.ncedula}
                 helperText={errors.ncedula ? errors.ncedula?.message : null}
                 defaultValue={""} />

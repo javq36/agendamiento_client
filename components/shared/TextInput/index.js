@@ -10,8 +10,8 @@ const fieldStyle = {
     padding: '8px',
     border: '10px',
     borderRadius: '10px',
-    marginBottom: '5px',
-    marginTop: '5px',
+    marginBottom: '7px',
+    marginTop: '2px',
 };
 
 export const TextFieldInput = ({ name, control, label, type, errors, helperText, defaultValue}) => {
