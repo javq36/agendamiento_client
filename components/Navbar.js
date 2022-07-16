@@ -31,7 +31,7 @@ export function Navbar() {
            
             </Typography>
             <Typography variant="h6" color="initial">
-              <a href="" className='contactanos'>Contáctanos</a>
+              <a href="/contactanos" className='contactanos'>Contáctanos</a>
             </Typography>
          
           </Toolbar>

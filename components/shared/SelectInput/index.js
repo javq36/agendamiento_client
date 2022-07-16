@@ -5,13 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 
 
 const selectStyle = {
-    width: '94%',
-    margin: '3%',
-    padding: '3px',
-    border: '10px',
-    borderRadius: '10px',
-    marginBottom: '5px',
-    marginTop: '4px',
+  width: '90%',
+  margin: '5%',
+  padding: '8px',
+  border: '10px',
+  marginBottom: '7px',
+  marginTop: '2px',
 };
 
 

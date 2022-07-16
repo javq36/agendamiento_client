@@ -147,3 +147,11 @@ body{
 .block{
   display: block;
 }
+
+li{
+  list-style: none;
+}
+ul{
+  padding: 0;
+  margin-top: 0;
+}
