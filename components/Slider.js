@@ -11,10 +11,10 @@ export function Slider() {
   return (
     <Carousel autoPlay infiniteLoop showArrows={false} swipeable={true} showStatus={false} showThumbs={false} interval={6000} >
       <div key={2}>
-        <Image src={banner} width={1200} height={500} style={{}} />
+        <Image src={banner2} width={1200} height={500} style={{}} />
       </div>
       <div key={3}>
-        <Image src={banner2} width={1200} height={500} style={{}} />
+        <Image src={banner} width={1200} height={500} style={{}} />
       </div>
       <div key={4}>
         <Image src={banner3} width={1200} height={500} style={{}} />

@@ -5,11 +5,10 @@ import TextField from "@mui/material/TextField";
 
 
 const fieldStyle = {
-    width: '95%',
-    margin: '2%',
+    width: '90%',
+    margin: '5%',
     padding: '8px',
     border: '10px',
-    borderRadius: '10px',
     marginBottom: '7px',
     marginTop: '2px',
 };
