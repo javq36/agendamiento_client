@@ -16,13 +16,12 @@ import Button from '@mui/material/Button';
 import imglogo from '../assets/w.png';
 import Image from 'next/image';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
 import CloseIcon from '@mui/icons-material/Close';
 // animaciones
-import { motion, useScroll, AnimatePresence } from "framer-motion"
-import { usStates } from "../constants/usStates";
-import { transform } from "framer-motion"
-import { useState } from "react";
+import { motion } from "framer-motion"
+import Link from 'next/link'
+
+
 
 
 
@@ -33,8 +32,7 @@ const drawerHeight = '210px';
 const navItems = ['Home', 'Contáctanos', 'Ver mi Historial', 'Generar PQR'];
 
 
-export function Navbar(props) {
-  const { window } = props;
+export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isView, setIsView] = React.useState('hidden');
   const [oculto, setOculto] = React.useState('none');
@@ -48,7 +46,7 @@ export function Navbar(props) {
     } else {
       setIsView('show');
       setOculto('block');
-      setOculto2('block');
+      setOculto2('none');
     }
   };
 
@@ -67,103 +65,114 @@ export function Navbar(props) {
     hidden: { opacity: 0, scale: 0 },
     show: {
       opacity: 1, scale: 1,
-      animate: { x: [200]},
-      transition: { type: "Spring ", stiffness: 20}
+      animate: { x: [200] },
+      transition: { type: "Spring ", stiffness: 20 }
     }
   }
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle}>
-      <motion.ul
-        variants={containerw}
-        layout
-        animate={isView}
-      >
-        {navItems.map((item) => (
-          <motion.li
-            variants={itemanimado}>
-            <ListItem key={item} disablePadding>
-              <ListItemButton sx={{ textAlign: 'left' }}>
-                <ListItemText sx={{ marginLeft: 2 }} primary={item} />
-              </ListItemButton>
-            </ListItem>
-          </motion.li>
-        ))}
-      </motion.ul>
-    </Box>
-  );
 
 
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex', paddingBottom: 10 }}>
-      <Drawer variant="permanent" anchor="top">
-        <AppBar component="nav" style={{ color: "black", backgroundColor: "#FDFEFE", paddingTop: 6 }} sx={{ zIndex: 0 }}>
-          <Container maxWidth="md">
-            <Toolbar>
-              <div>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2, display: { sm: 'none' } }}>
+    <motion.div
+      initial={{ opacity: 0, duration: 200 }}
+      animate={{ y: [-2000, 0], opacity: 2 }}
+      transition={{ type: "spring", stiffness: 100, duration: 3 }}>
+      <Box sx={{ display: 'flex', paddingBottom: 10 }}>
+        <Drawer variant="permanent" anchor="top">
+          <AppBar component="nav" style={{ color: "black", backgroundColor: "#FDFEFE", paddingTop: 6 }} sx={{ zIndex: 0 }}>
+            <Container maxWidth="md">
+              <Toolbar>
+                <div>
+                  <Container maxWidth="sm">
+                    <IconButton
+                      color="primary"
+                      aria-label="open drawer"
+                      edge="start"
+                      onClick={handleDrawerToggle}
+                      sx={{ mr: 2, display: { sm: 'none' }, color: '#2f335e' }}>
+                      <MenuIcon style={{ display: oculto2 }} />
+                      <CloseIcon style={{ display: oculto }} />
+                    </IconButton>
+                  </Container>
+                </div>
+                <div>
+                  <Typography
+                    variant="h2"
+                    component="div"
+                    sx={{ display: { xs: 'none', sm: 'block' } }}
+                  >
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                      <Image
+                        src={imglogo}
+                        alt="Picture of the author"
+                        width={160}
+                        height={45}
+                      />
 
-                  <MenuIcon style={{display: oculto2}} />
-
-                  <CloseIcon  style={{display: oculto}} />
-
-                </IconButton>
-              </div>
-              <div>
-                <Typography
-                  variant="h2"
-                  component="div"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}
-                >
-                  <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                    <Image
-                      src={imglogo}
-                      alt="Picture of the author"
-                      width={160}
-                      height={45}
-                    />
-
-                    {navItems.map((item) => (
-                      <Button key={item} href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
-                        {item}
-                      </Button>
-                    ))}
-                  </Box>
-                </Typography>
-              </div>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </Drawer>
-
-      <Box component="nav">
-        
-        <Drawer
-          container={container}
-          variant="persistent"
-          anchor="top"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', height: drawerHeight, width: drawerWidth, marginTop: 6 },
-          }}
-        >
-          {drawer}
+                      {navItems.map((item) => (
+                        <Button key={item} href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
+                          {item}
+                        </Button>
+                      ))}
+                    </Box>
+                  </Typography>
+                </div>
+              </Toolbar>
+            </Container>
+          </AppBar>
         </Drawer>
 
+        <Box component="nav">
+          <Drawer
+            variant="persistent"
+            anchor="top"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', height: drawerHeight, width: drawerWidth, marginTop: 7.5, backgroundColor: '#ECF0F1' },
+            }}
+          >
+            <Box onClick={handleDrawerToggle}>
+              <motion.ul
+                variants={containerw}
+                layout
+                animate={isView}
+              >
+                <motion.li
+                  variants={itemanimado}>
+                  <ListItemButton href="./" sx={{ textAlign: 'left' }}>
+                    <ListItemText sx={{ marginLeft: 4 }} primary={'Inicio'} />
+                  </ListItemButton>
+                </motion.li>
+                <motion.li
+                  variants={itemanimado}>
+                  <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
+                    <ListItemText sx={{ marginLeft: 4 }} primary={'Contáctanos'} />
+                  </ListItemButton>
+                </motion.li>
+                <motion.li
+                  variants={itemanimado}>
+                  <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
+                    <ListItemText sx={{ marginLeft: 4 }} primary={'Ver mi Historial'} />
+                  </ListItemButton>
+                </motion.li>
+                <motion.li
+                  variants={itemanimado}>
+                  <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
+                    <ListItemText sx={{ marginLeft: 4 }} primary={'Generar PQR'} />
+                  </ListItemButton>
+                </motion.li>
+              </motion.ul>
+            </Box>
+          </Drawer>
+        </Box>
       </Box>
-    </Box>
+    </motion.div>
   );
 }
 
