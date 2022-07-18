@@ -113,7 +113,7 @@ function index() {
     }
   }
   const itemanimado = {
-    hidden: { opacity: 0, scale: 0},
+    hidden: { opacity: 0, scale: 0 },
     show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "Tween", stiffness: 100, duration: 2 } }
   }
   const itemanimado2 = {
@@ -144,7 +144,7 @@ function index() {
               layout: { duration: 0.4 }
             }}>
             <Paper elevation={4} style={{ overflow: 'hidden', marginTop: 15, marginBottom: 20, boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)" }}>
-              <h3 style={{ textAlign: 'center', paddingTop: '20px', marginBottom: '0px' }}>Agenda tu Cita</h3>
+              <h3 style={{ textAlign: 'center', paddingTop: '10px', marginBottom: '8px' }}>Agenda tu Cita</h3>
               <TextFieldInput name={'placa'} control={control} label={'Numero de Placa'} type={'text'} errors={!!errors.placa}
                 helperText={errors.placa ? errors.placa?.message : null}
                 defaultValue={""}
