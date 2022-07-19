@@ -56,17 +56,14 @@ export function Navbar() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.5
+        staggerChildren: 0.2
       }
     }
   }
 
   const itemanimado = {
     hidden: { opacity: 0, scale: 0 },
-    show: {
-      opacity: 1, scale: 1,
-      animate: { x: [200] },
-      transition: { type: "Spring ", stiffness: 20 }
+    show: { opacity: 1, scale: 1, transition: { type: "spring", duration: 1 } 
     }
   }
 
@@ -76,7 +73,7 @@ export function Navbar() {
   return (
     <motion.div
       initial={{ opacity: 0, duration: 200 }}
-      animate={{ y: [-2000, 0], opacity: 2 }}
+      animate={{ y: [-2000 , 0], opacity: 2 }}
       transition={{ type: "spring", stiffness: 100, duration: 3 }}>
       <Box sx={{ display: 'flex', paddingBottom: 10 }}>
         <Drawer variant="permanent" anchor="top">
@@ -109,12 +106,18 @@ export function Navbar() {
                         width={160}
                         height={45}
                       />
-
-                      {navItems.map((item) => (
-                        <Button key={item} href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
-                          {item}
+                        <Button href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
+                            Inicio
                         </Button>
-                      ))}
+                        <Button href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
+                            Ver mi Historial
+                        </Button>
+                        <Button href="./" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
+                            Generar PQRS
+                        </Button>
+                        <Button href="./contactanos" sx={{ fontSize: '13px', color: 'black', marginBottom: '0.4vw', marginLeft: '0.4vw', padding: '0.4vw', }}>
+                            Contactanos
+                        </Button>
                     </Box>
                   </Typography>
                 </div>
@@ -152,12 +155,6 @@ export function Navbar() {
                 <motion.li
                   variants={itemanimado}>
                   <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
-                    <ListItemText sx={{ marginLeft: 4 }} primary={'Contáctanos'} />
-                  </ListItemButton>
-                </motion.li>
-                <motion.li
-                  variants={itemanimado}>
-                  <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
                     <ListItemText sx={{ marginLeft: 4 }} primary={'Ver mi Historial'} />
                   </ListItemButton>
                 </motion.li>
@@ -165,6 +162,12 @@ export function Navbar() {
                   variants={itemanimado}>
                   <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
                     <ListItemText sx={{ marginLeft: 4 }} primary={'Generar PQR'} />
+                  </ListItemButton>
+                </motion.li>
+                <motion.li
+                  variants={itemanimado}>
+                  <ListItemButton href="./contactanos" sx={{ textAlign: 'left' }}>
+                    <ListItemText sx={{ marginLeft: 4 }} primary={'Contáctanos'} />
                   </ListItemButton>
                 </motion.li>
               </motion.ul>
