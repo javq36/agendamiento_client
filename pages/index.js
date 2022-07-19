@@ -8,7 +8,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Slider } from '../components/Slider';
 // navbar
 import { Navbar } from '../components/Navbar';
-
+// footer
+import { Footer } from '../components/Footer';
 // formulario
 import { TextFieldInput } from '../components/shared/TextInput';
 import { SelectFieldInputOnChange } from '../components/shared/SelectInput/';
@@ -18,12 +19,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import SendIcon from '@mui/icons-material/Send';
 // animaciones
-import { motion, useScroll, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import Button from '@mui/material/Button'
 import { usStates } from "../constants/usStates";
-import { transform } from "framer-motion"
-import { useState } from "react";
-import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+
 
 // validamos que la entrada solo sea de digitos
 const digitsOnly = (value) => /^\d+$/.test(value)
@@ -113,19 +113,19 @@ function index() {
     }
   }
   const itemanimado = {
-    hidden: { opacity: 0, scale: 0},
-    show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "Tween", stiffness: 100, duration: 2 } }
+    hidden: { opacity: 0, scale: 0 },
+    show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "Tween", stiffness: 100, duration: 1 } }
   }
   const itemanimado2 = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, x: [-5000, 0], transition: { type: "spring", stiffness: 100, duration: 2 } }
+    show: { opacity: 1, scale: 1, x: [-5000, 0], transition: { type: "spring", stiffness: 100, duration: 1 } }
   }
 
 
   return (
     <div>
       <Navbar />
-      <Container maxWidth="md" style={{ marginBottom: '30px' }}>
+      <Container maxWidth="md" style={{ marginBottom: 10 }}>
         <motion.div
           animate={{ x: [-4000, 0], opacity: 2, boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.2)" }}
           transition={{ type: "spring", stiffness: 100, duration: 4 }}>
@@ -135,7 +135,7 @@ function index() {
         </motion.div>
       </Container>
 
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx={{marginBottom: 20 , overflow: 'hidden'}}>
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}
           transition={{ type: "spring", stiffness: 100, duration: 4 }}>
@@ -144,7 +144,7 @@ function index() {
               layout: { duration: 0.4 }
             }}>
             <Paper elevation={4} style={{ overflow: 'hidden', marginTop: 15, marginBottom: 20, boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)" }}>
-              <h3 style={{ textAlign: 'center', paddingTop: '20px', marginBottom: '0px' }}>Agenda tu Cita</h3>
+              <h3 style={{ textAlign: 'center', paddingTop: '10px', marginBottom: '8px' }}>Agenda tu Cita</h3>
               <TextFieldInput name={'placa'} control={control} label={'Numero de Placa'} type={'text'} errors={!!errors.placa}
                 helperText={errors.placa ? errors.placa?.message : null}
                 defaultValue={""}
@@ -236,6 +236,8 @@ function index() {
           </motion.div>
         </motion.div>
       </Container>
+
+      <Footer />
 
     </div >
   )
