@@ -44,7 +44,6 @@ export const SelectFieldInputOnChange = ({
             error={errors}
             helperText={helperText}
             value={value}
-           // disabled={disabled} 
           >
             {options.map((option) => (
               <MenuItem key={option.id} value={option.id}>

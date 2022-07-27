@@ -67,6 +67,9 @@ const formularioSchema = yup
     sucursal: yup //select
       .string()
       .required("Por favor ingrese la Sucursal"),
+    pruebaw: yup //select
+      .string()
+      .required("Por favor ingrese la Sucursal"),
   })
   .required();
 
@@ -114,7 +117,7 @@ function index() {
   }
   const itemanimado = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "Tween", stiffness: 100, duration: 1 } }
+    show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "spring", stiffness: 100, duration: 1 } }
   }
   const itemanimado2 = {
     hidden: { opacity: 0, scale: 0 },
@@ -135,7 +138,7 @@ function index() {
         </motion.div>
       </Container>
 
-      <Container maxWidth="sm" sx={{marginBottom: 20 , overflow: 'hidden'}}>
+      <Container maxWidth="sm" sx={{ marginBottom: 20, overflow: 'hidden' }}>
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}
           transition={{ type: "spring", stiffness: 100, duration: 4 }}>

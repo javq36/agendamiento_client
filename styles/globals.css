@@ -201,9 +201,7 @@ ul{
   text-align: center;
   transition: all 300ms ease;
 }
-.pie-pagina .grupo-1 .red-social a:hover{
-  color: rgb(37, 36, 69);
-}
+
 .pie-pagina .grupo-2{
   background-color: #0b141d;
   padding: 15px 10px;
@@ -220,4 +218,15 @@ ul{
       grid-gap:30px;
       padding: 35px 0px;
   }
+}
+
+.box{
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.red-social svg{
+  margin-top: 10px;
 }
