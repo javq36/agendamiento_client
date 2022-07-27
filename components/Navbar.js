@@ -56,14 +56,15 @@ export function Navbar() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.3
       }
     }
   }
 
   const itemanimado = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, transition: { type: "spring", duration: 1 } 
+    show: { opacity: 1, scale: 1, animate:{ rotate: 180 },
+    transition:{ duration: 1 }, 
     }
   }
 
@@ -72,7 +73,7 @@ export function Navbar() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, duration: 200 }}
+      initial={{ opacity: 0, duration: 2 }}
       animate={{ y: [-2000 , 0], opacity: 2 }}
       transition={{ type: "spring", stiffness: 100, duration: 3 }}>
       <Box sx={{ display: 'flex', paddingBottom: 10 }}>

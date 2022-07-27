@@ -1,78 +1,77 @@
-import * as React from 'react';
-import Container from '@mui/material/Container'
-import Paper from '@mui/material/Paper';
+import * as React from "react";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-
 // Slider o carrousel responsive
-import { Slider } from '../components/Slider';
+import { Slider } from "../components/Slider";
 // navbar
-import { Navbar } from '../components/Navbar';
+import { Navbar } from "../components/Navbar";
 // footer
-import { Footer } from '../components/Footer';
+import { Footer } from "../components/Footer";
 // formulario
-import { TextFieldInput } from '../components/shared/TextInput';
-import { SelectFieldInputOnChange } from '../components/shared/SelectInput/';
+import { TextFieldInput } from "../components/shared/TextInput";
+import { SelectFieldInputOnChange } from "../components/shared/SelectInput";
+import FormHelperText from "@mui/material/FormHelperText";
 // controladores y validaciones del formulario
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import SendIcon from '@mui/icons-material/Send';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import SendIcon from "@mui/icons-material/Send";
 // animaciones
-import { motion } from "framer-motion"
-import Button from '@mui/material/Button'
-import { usStates } from "../constants/usStates";
-
-
+import { motion } from "framer-motion";
+import Button from "@mui/material/Button";
+import {
+  listsucursal,
+  listtiposervicio,
+  listtipoajuste,
+} from "../constants/usStates";
+const Swal = require("sweetalert2");
+import ReactHowler from "react-howler";
 
 // validamos que la entrada solo sea de digitos
-const digitsOnly = (value) => /^\d+$/.test(value)
-
+const digitsOnly = (value) => /^\d+$/.test(value);
+{
+  /* 
+tiposervicio: yup
+      .string()
+      .required("Por favor ingrese el Tipo del servicio"),
+    tipoajuste: yup.string().required("Por favor ingrese el Tipo del Modelo"),
+    tiposucursal: yup.string().required("Por favor ingrese el Tipo del Modelo"),
+*/
+}
 const formularioSchema = yup
   .object({
     placa: yup
       .string()
       .required("Por favor ingrese el Numero de la Placa")
-      .min(6, "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana")
-      .max(7, "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"),
+      .min(
+        6,
+        "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"
+      )
+      .max(
+        7,
+        "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"
+      ),
     ncedula: yup
       .string()
       .required("Por favor ingrese el Numero de la Cedula")
-      .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
-      .max(10, "Ingrese maximo 10 digitos"),
+      .test("Digits only", "Porfavor solo ingrese Digitos", digitsOnly)
+      .max(10, "Ingrese maximo 10 digitos")
+      .matches(/^\w{9}/, "Porfavor Ingrese mas Digitos"),
     nombreyapellido: yup
       .string()
       .required("Por favor ingrese Nombre y Apellido")
       .matches(/^[aA-zZ\s]+$/, "Porfavor ingrese solo Letras"),
     celular: yup
       .string()
-      .test('Digits only', 'Porfavor solo ingrese Digitos', digitsOnly)
+      .test("Digits only", "Porfavor solo ingrese Digitos", digitsOnly)
       .required("Por favor ingrese el Numero Telefonico")
       .matches(/^\w{8}/, "Porfavor Ingrese mas de 8 Digitos"),
-    marca: yup
-      .string()
-      .required("Por favor ingrese la Marca del Vehiculo"),
-    modelov: yup
-      .string()
-      .required("Por favor ingrese el Tipo del Modelo"),
-    tipodeservicio: yup //select
-      .string()
-      .required("Por favor ingrese el Tipo del Servicio"),
-    tipoajuste: yup //select
-      .string()
-      .required("Por favor ingrese el Tipo de Ajustes"),
-    nota: yup
-      .string()
-      .required("Por favor ingrese la Nota"),
-    sucursal: yup //select
-      .string()
-      .required("Por favor ingrese la Sucursal"),
-    pruebaw: yup //select
-      .string()
-      .required("Por favor ingrese la Sucursal"),
+    marca: yup.string().required("Por favor ingrese la Marca del Vehiculo"),
+    modelov: yup.string().required("Por favor ingrese el Tipo del Modelo"),
   })
   .required();
-
 function index() {
   const {
     register,
@@ -82,28 +81,127 @@ function index() {
   } = useForm({
     resolver: yupResolver(formularioSchema),
   });
+  const [tiposervicio, setTiposervicio] = React.useState("");
+  const [tipoajuste, setTipoajuste] = React.useState("");
+  const [tiposucursal, setTipsucursal] = React.useState("");
+  // errores de los select
+  const [error1, setError1] = React.useState(false);
+  const [error2, setError2] = React.useState(false);
+  const [error3, setError3] = React.useState(false);
+  // mensaje de error para el helptext
+  const [error1message, setError1message] = React.useState("");
+  const [error2message, setError2message] = React.useState("");
+  const [error3message, setError3message] = React.useState("");
 
-  const [age, setAge] = React.useState('');
-  const [oculto, setOculto] = React.useState('none');
-  const [displayboton, setDisplayboton] = React.useState('true');
+  const [oculto, setOculto] = React.useState("none");
+  const [displayboton, setDisplayboton] = React.useState("true");
+  const [isView, setIsView] = React.useState("hidden");
+  // mensaje base de los alerts de sweety alert
+  const alertmensagge = "";
 
-  const [isView, setIsView] = React.useState('hidden');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const validateSelector = () => {
+    if (tiposervicio === "") {
+      setError1(true);
+      setError1message("Por favor ingrese el Tipo del Servicio");
+    } else {
+      setError1(false);
+      setError1message("");
+    }
   };
-
+  const validateSelector2 = () => {
+    if (tipoajuste === "") {
+      setError2(true);
+      setError2message("Por favor ingrese el Tipo de Ajuste");
+    } else {
+      setError2(false);
+      setError2message("");
+    }
+  };
+  const validateSelector3 = () => {
+    if (tiposucursal === "") {
+      setError3(true);
+      setError3message("Por favor ingrese la Sucursal");
+    } else {
+      setError3(false);
+      setError3message("");
+    }
+  };
+  const Validations = () => {
+    validateSelector();
+    validateSelector2();
+    validateSelector3();
+  };
   // al momento de precionar el boton hace esto
   const formSubmitHandler = async (data) => {
     if (Object.keys(errors).length === 0) {
-      data.pruebaw = age ?? 'no llego';
-      console.log(data);
+      data.tipodeservicio = tiposervicio ?? "no llego";
+      data.tipodeajuste = tipoajuste ?? "no llego";
+      data.sucursal = tiposucursal ?? "no llego";
+      if (tiposervicio === "" || tipoajuste === "" || tiposucursal === "") {
+        console.log(tiposervicio);
+        console.log(tipoajuste);
+        console.log(tiposucursal);
+      } else {
+        alertmensagge = "Prueba de Sucess";
+        AlertSuccess(alertmensagge);
+        console.log(data);
+      }
     }
   };
+
+  // este es el search, la funcion corre despues de darle al boton buscar
   const formSearchHandler = async (data) => {
-    setOculto('block');
-    setDisplayboton('none')
-    setIsView('show');
+    var bplaca = document.getElementById("placa").value;
+    // validamos el tamaño
+    if (bplaca.length > 5 && bplaca.length < 8) {
+      // validamos la respuesta
+      if (bplaca === "prueba") {
+        setOculto("block");
+        setDisplayboton("none");
+        setIsView("show");
+      } else {
+        alertmensagge = "Por favor ingrese un numero valido de placa";
+        AlertError(alertmensagge);
+      }
+    } else {
+      alertmensagge =
+        "Por favor ingrese 6 digitos para placa colombiana y 7 para placa venezolana";
+      AlertError(alertmensagge);
+    }
+  };
+  const Submit = () => {
+    validateSelector();
+    validateSelector2();
+    validateSelector3();
+  };
+
+  // estos son lso handlechanges para los selects, actualizn la casilla con el valor
+  const handleChange = (event) => {
+    setTiposervicio(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    setTipoajuste(event.target.value);
+  };
+  const handleChange3 = (event) => {
+    setTipsucursal(event.target.value);
+  };
+  const AlertError = (alertmensagge) => {
+    Swal.fire({
+      title: "¡Error!",
+      text: alertmensagge,
+      icon: "error",
+      confirmButtonColor: "#2f335e",
+      confirmButtonText: "Ok",
+    });
+  };
+  const AlertSuccess = (alertmensagge) => {
+    Swal.fire({
+      title: "¡Perfecto!",
+      text: alertmensagge,
+      icon: "success",
+      confirmButtonColor: "#2f335e",
+      confirmButtonText: "Ok",
+    });
   };
 
   const container = {
@@ -111,50 +209,107 @@ function index() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.5
-      }
-    }
-  }
+        staggerChildren: 0.5,
+      },
+    },
+  };
   const itemanimado = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, x: [5000, 0], transition: { type: "spring", stiffness: 100, duration: 1 } }
-  }
+    show: {
+      opacity: 1,
+      scale: 1,
+      x: [5000, 0],
+      transition: { type: "spring", stiffness: 100, duration: 1 },
+    },
+  };
   const itemanimado2 = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, x: [-5000, 0], transition: { type: "spring", stiffness: 100, duration: 1 } }
-  }
-
+    show: {
+      opacity: 1,
+      scale: 1,
+      x: [-5000, 0],
+      transition: { type: "spring", stiffness: 100, duration: 1 },
+    },
+  };
 
   return (
     <div>
       <Navbar />
       <Container maxWidth="md" style={{ marginBottom: 10 }}>
         <motion.div
-          animate={{ x: [-4000, 0], opacity: 2, boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.2)" }}
-          transition={{ type: "spring", stiffness: 100, duration: 4 }}>
-          <Paper elevation={4} style={{ marginTop: 15, backgroundColor: 'black' }}>
+          animate={{
+            x: [-4000, 0],
+            opacity: 2,
+            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.2)",
+          }}
+          transition={{ type: "spring", stiffness: 100, duration: 4 }}
+        >
+          <Paper
+            elevation={4}
+            style={{ marginTop: 15, backgroundColor: "black" }}
+          >
             <Slider />
           </Paper>
         </motion.div>
       </Container>
 
-      <Container maxWidth="sm" sx={{ marginBottom: 20, overflow: 'hidden' }}>
+      <Container maxWidth="sm" sx={{ marginBottom: 20, overflow: "hidden" }}>
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}
-          transition={{ type: "spring", stiffness: 100, duration: 4 }}>
-          <motion.div layout
+          transition={{ type: "spring", stiffness: 100, duration: 4 }}
+        >
+          <motion.div
+            layout
             transition={{
-              layout: { duration: 0.4 }
-            }}>
-            <Paper elevation={4} style={{ overflow: 'hidden', marginTop: 15, marginBottom: 20, boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)" }}>
-              <h3 style={{ textAlign: 'center', paddingTop: '10px', marginBottom: '8px' }}>Agenda tu Cita</h3>
-              <TextFieldInput name={'placa'} control={control} label={'Numero de Placa'} type={'text'} errors={!!errors.placa}
+              type: "spring",
+              stiffness: 500,
+              layout: { duration: 0.5 },
+              default: { ease: "linear" },
+            }}
+          >
+            <Paper
+              elevation={4}
+              style={{
+                overflow: "hidden",
+                marginTop: 15,
+                marginBottom: 20,
+                boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <h3
+                style={{
+                  textAlign: "center",
+                  paddingTop: "10px",
+                  marginBottom: "8px",
+                }}
+              >
+                Agenda tu Cita
+              </h3>
+
+              <TextFieldInput
+                id="placa"
+                name={"placa"}
+                control={control}
+                label={"Numero de Placa"}
+                type={"text"}
+                errors={!!errors.placa}
                 helperText={errors.placa ? errors.placa?.message : null}
                 defaultValue={""}
-                style={{ marginBottom: '0px', paddingBottom: '0px' }} endIcon={<SendIcon />}
+                style={{ marginBottom: "0px", paddingBottom: "0px" }}
+                endIcon={<SendIcon />}
               />
+
               <Container maxWidth="sm" style={{ display: displayboton }}>
-                <Button onClick={formSearchHandler} variant="contained" style={{ width: "100%", marginBottom: 12, backgroundColor: '#2f335e' }} endIcon={<SendIcon />} >
+                <Button
+                  onClick={formSearchHandler}
+                  variant="contained"
+                  style={{
+                    width: "100%",
+                    marginBottom: 12,
+                    backgroundColor: "#2f335e",
+                  }}
+                  endIcon={<SendIcon />}
+                >
                   Buscar
                 </Button>
               </Container>
@@ -163,77 +318,127 @@ function index() {
                 variants={container}
                 layout
                 animate={isView}
-                className={oculto}>
+                className={oculto}
+              >
                 <motion.li variants={itemanimado}>
-                  <TextFieldInput name={'ncedula'} control={control} label={'Numero de Cédula'} type={'text'} errors={!!errors.ncedula}
-                    helperText={errors.ncedula ? errors.ncedula?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput name={'nombreyapellido'} control={control} label={'Nombre y Apellido'} type={'text'} errors={!!errors.nombreyapellido}
-                    helperText={errors.nombreyapellido ? errors.nombreyapellido?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput name={'celular'} control={control} label={'Celular'} type={'text'} errors={!!errors.celular}
-                    helperText={errors.celular ? errors.celular?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput name={'marca'} control={control} label={'Marca'} type={'text'} errors={!!errors.marca}
-                    helperText={errors.marca ? errors.marca?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput name={'modelov'} control={control} label={'Modelo del Vehículo'} type={'text'} errors={!!errors.modelov}
-                    helperText={errors.modelov ? errors.modelov?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput name={'tipodeservicio'} control={control} label={'Tipo de Servicio'} type={'text'} errors={!!errors.tipodeservicio}
-                    helperText={errors.tipodeservicio ? errors.tipodeservicio?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput name={'tipoajuste'} control={control} label={'Tipo de Ajuste'} type={'text'} errors={!!errors.tipoajuste}
-                    helperText={errors.tipoajuste ? errors.tipoajuste?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput name={'nota'} control={control} label={'Nota'} type={'text'} errors={!!errors.nota}
-                    helperText={errors.nota ? errors.nota?.message : null}
-                    defaultValue={""} />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <SelectFieldInputOnChange
-                    name={"pruebaw"}
+                  <TextFieldInput
+                    name={"ncedula"}
                     control={control}
-                    onChange={handleChange}
-                    label={"Frecuencia de pago"}
+                    label={"Numero de Cédula"}
                     type={"text"}
-                    errors={!!errors.pruebaw}
-                    helperText={
-                      errors.pruebaw ? errors.pruebaw?.message : null
-                    }
+                    errors={!!errors.ncedula}
+                    helperText={errors.ncedula ? errors.ncedula?.message : null}
                     defaultValue={""}
-                    options={usStates}
-                    value={age}
-                    required
-                  /*  disabled={unique}  */
                   />
                 </motion.li>
                 <motion.li variants={itemanimado2}>
-                  <TextFieldInput name={'sucursal'} control={control} label={'Sucursal'} type={'text'} errors={!!errors.sucursal}
-                    helperText={errors.sucursal ? errors.sucursal?.message : null}
-                    defaultValue={""} />
+                  <TextFieldInput
+                    name={"nombreyapellido"}
+                    control={control}
+                    label={"Nombre y Apellido"}
+                    type={"text"}
+                    errors={!!errors.nombreyapellido}
+                    helperText={
+                      errors.nombreyapellido
+                        ? errors.nombreyapellido?.message
+                        : null
+                    }
+                    defaultValue={""}
+                  />
                 </motion.li>
-
-                <Container maxWidth="sm">
-                  <Button onClick={handleSubmit(formSubmitHandler)} variant="contained" style={{ width: "100%", marginBottom: 12, backgroundColor: '#2f335e' }} endIcon={<SendIcon />} >
-                    Enviar
-                  </Button>
-                </Container>
-
+                <motion.li variants={itemanimado}>
+                  <TextFieldInput
+                    name={"celular"}
+                    control={control}
+                    label={"Celular"}
+                    type={"text"}
+                    errors={!!errors.celular}
+                    helperText={errors.celular ? errors.celular?.message : null}
+                    defaultValue={""}
+                  />
+                </motion.li>
+                <motion.li variants={itemanimado2}>
+                  <TextFieldInput
+                    name={"marca"}
+                    control={control}
+                    label={"Marca"}
+                    type={"text"}
+                    errors={!!errors.marca}
+                    helperText={errors.marca ? errors.marca?.message : null}
+                    defaultValue={""}
+                  />
+                </motion.li>
+                <motion.li variants={itemanimado}>
+                  <TextFieldInput
+                    name={"modelov"}
+                    control={control}
+                    label={"Modelo del Vehículo"}
+                    type={"text"}
+                    errors={!!errors.modelov}
+                    helperText={errors.modelov ? errors.modelov?.message : null}
+                    defaultValue={""}
+                  />
+                </motion.li>
+                <motion.li variants={itemanimado2} onBlur={validateSelector}>
+                  <SelectFieldInputOnChange
+                    name={"tipodeservicio"}
+                    control={control}
+                    label={"Tipo de Servicio"}
+                    type={"select"}
+                    errors={!!error1}
+                    helperText={error1message}
+                    defaultValue={""}
+                    options={listtiposervicio}
+                    onChange={handleChange}
+                    value={tiposervicio}
+                  ></SelectFieldInputOnChange>
+                </motion.li>
+                <motion.li variants={itemanimado} onBlur={validateSelector2}>
+                  <SelectFieldInputOnChange
+                    id="tipoajuste"
+                    name={"tipodeajuste"}
+                    control={control}
+                    label={"Tipo de Ajuste"}
+                    type={"select"}
+                    errors={!!error2}
+                    helperText={error2message}
+                    defaultValue={""}
+                    options={listtipoajuste}
+                    onChange={handleChange2}
+                    value={tipoajuste}
+                  />
+                </motion.li>
+                <motion.li variants={itemanimado2} onBlur={validateSelector3}>
+                  <SelectFieldInputOnChange
+                    name={"sucursal"}
+                    control={control}
+                    label={"Sucursal"}
+                    type={"select"}
+                    errors={!!error3}
+                    helperText={error3message}
+                    defaultValue={""}
+                    options={listsucursal}
+                    onChange={handleChange3}
+                    value={tiposucursal}
+                  />
+                </motion.li>
+                <motion.li variants={itemanimado}>
+                  <Container maxWidth="sm">
+                    <Button
+                      onClick={handleSubmit(formSubmitHandler)}
+                      onFocus={Validations}
+                      variant="contained"
+                      style={{
+                        width: "100%",
+                        marginBottom: 12,
+                        backgroundColor: "#2f335e",
+                      }}
+                      endIcon={<SendIcon />}
+                    >
+                      Enviar
+                    </Button>
+                  </Container>
+                </motion.li>
               </motion.ul>
             </Paper>
           </motion.div>
@@ -241,10 +446,8 @@ function index() {
       </Container>
 
       <Footer />
-
-    </div >
-  )
+    </div>
+  );
 }
 
 export default index;
-
