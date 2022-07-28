@@ -33,6 +33,8 @@ export const TextFieldInput = ({
           sx={fieldStyle}
           label={label}
           variant="filled"
+          color={'success'} 
+          focused={'true'}
           type={type}
           {...field}
           error={errors}

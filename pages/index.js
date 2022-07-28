@@ -2,7 +2,11 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import { useEffect } from "react";
+// alert
+import { AlertError, AlertSuccess } from "../helpers/AlertFunctions";
 // Slider o carrousel responsive
 import { Slider } from "../components/Slider";
 // navbar
@@ -12,66 +16,27 @@ import { Footer } from "../components/Footer";
 // formulario
 import { TextFieldInput } from "../components/shared/TextInput";
 import { SelectFieldInputOnChange } from "../components/shared/SelectInput";
-import FormHelperText from "@mui/material/FormHelperText";
 // controladores y validaciones del formulario
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import SendIcon from "@mui/icons-material/Send";
+import { formularioSchema } from "../helpers/YupValidations";
 // animaciones
 import { motion } from "framer-motion";
-import Button from "@mui/material/Button";
+import {
+  container,
+  itemanimado,
+  itemanimado2,
+} from "../helpers/AnimationsProps";
+// listas de opciones para los selects
 import {
   listsucursal,
   listtiposervicio,
   listtipoajuste,
 } from "../constants/usStates";
-const Swal = require("sweetalert2");
-import ReactHowler from "react-howler";
+// localstorage
+import { useLocalStorage } from  "../constants/useLocalStorage";
 
-// validamos que la entrada solo sea de digitos
-const digitsOnly = (value) => /^\d+$/.test(value);
-{
-  /* 
-tiposervicio: yup
-      .string()
-      .required("Por favor ingrese el Tipo del servicio"),
-    tipoajuste: yup.string().required("Por favor ingrese el Tipo del Modelo"),
-    tiposucursal: yup.string().required("Por favor ingrese el Tipo del Modelo"),
-*/
-}
-const formularioSchema = yup
-  .object({
-    placa: yup
-      .string()
-      .required("Por favor ingrese el Numero de la Placa")
-      .min(
-        6,
-        "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"
-      )
-      .max(
-        7,
-        "Ingrese maximo 6 digitos para placa Colombiana y 7 para placa Venezolana"
-      ),
-    ncedula: yup
-      .string()
-      .required("Por favor ingrese el Numero de la Cedula")
-      .test("Digits only", "Porfavor solo ingrese Digitos", digitsOnly)
-      .max(10, "Ingrese maximo 10 digitos")
-      .matches(/^\w{9}/, "Porfavor Ingrese mas Digitos"),
-    nombreyapellido: yup
-      .string()
-      .required("Por favor ingrese Nombre y Apellido")
-      .matches(/^[aA-zZ\s]+$/, "Porfavor ingrese solo Letras"),
-    celular: yup
-      .string()
-      .test("Digits only", "Porfavor solo ingrese Digitos", digitsOnly)
-      .required("Por favor ingrese el Numero Telefonico")
-      .matches(/^\w{8}/, "Porfavor Ingrese mas de 8 Digitos"),
-    marca: yup.string().required("Por favor ingrese la Marca del Vehiculo"),
-    modelov: yup.string().required("Por favor ingrese el Tipo del Modelo"),
-  })
-  .required();
+
 function index() {
   const {
     register,
@@ -81,6 +46,8 @@ function index() {
   } = useForm({
     resolver: yupResolver(formularioSchema),
   });
+  const [usuario, setusuario] = useLocalStorage('usuario', '');
+  console.log(usuario);
   const [tiposervicio, setTiposervicio] = React.useState("");
   const [tipoajuste, setTipoajuste] = React.useState("");
   const [tiposucursal, setTipsucursal] = React.useState("");
@@ -142,9 +109,9 @@ function index() {
         console.log(tipoajuste);
         console.log(tiposucursal);
       } else {
+        setusuario(data);
         alertmensagge = "Prueba de Sucess";
         AlertSuccess(alertmensagge);
-        console.log(data);
       }
     }
   };
@@ -169,11 +136,6 @@ function index() {
       AlertError(alertmensagge);
     }
   };
-  const Submit = () => {
-    validateSelector();
-    validateSelector2();
-    validateSelector3();
-  };
 
   // estos son lso handlechanges para los selects, actualizn la casilla con el valor
   const handleChange = (event) => {
@@ -185,52 +147,7 @@ function index() {
   const handleChange3 = (event) => {
     setTipsucursal(event.target.value);
   };
-  const AlertError = (alertmensagge) => {
-    Swal.fire({
-      title: "¡Error!",
-      text: alertmensagge,
-      icon: "error",
-      confirmButtonColor: "#2f335e",
-      confirmButtonText: "Ok",
-    });
-  };
-  const AlertSuccess = (alertmensagge) => {
-    Swal.fire({
-      title: "¡Perfecto!",
-      text: alertmensagge,
-      icon: "success",
-      confirmButtonColor: "#2f335e",
-      confirmButtonText: "Ok",
-    });
-  };
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.5,
-      },
-    },
-  };
-  const itemanimado = {
-    hidden: { opacity: 0, scale: 0 },
-    show: {
-      opacity: 1,
-      scale: 1,
-      x: [5000, 0],
-      transition: { type: "spring", stiffness: 100, duration: 1 },
-    },
-  };
-  const itemanimado2 = {
-    hidden: { opacity: 0, scale: 0 },
-    show: {
-      opacity: 1,
-      scale: 1,
-      x: [-5000, 0],
-      transition: { type: "spring", stiffness: 100, duration: 1 },
-    },
-  };
 
   return (
     <div>
