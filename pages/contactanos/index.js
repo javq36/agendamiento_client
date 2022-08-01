@@ -4,6 +4,8 @@ import Paper from '@mui/material/Paper';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
+// prueba
+import { Listado } from '../../components/Listado';
 // Slider o carrousel responsive
 import { Slider } from '../../components/Slider';
 // navbar
@@ -42,7 +44,7 @@ function index() {
           </Paper>
         </motion.div>
       </Container>
-
+    
       <Container maxWidth="md" sx={{ marginBottom: 20, overflow: 'hidden' }}>
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}
@@ -88,7 +90,7 @@ function index() {
           </motion.div>
         </motion.div>
       </Container>
-
+      <Listado />
       <Footer />
 
     </div >

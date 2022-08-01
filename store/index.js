@@ -1,9 +1,11 @@
 import { configureStore} from '@reduxjs/toolkit';
+import { todosApi } from './apis';
 // importamos el reducer
-import users from './slices/users';
+
 
 export default configureStore({
     reducer: {
-        users,
+        [todosApi.reducerPath]: todosApi.reducer,
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todosApi.middleware)
 });

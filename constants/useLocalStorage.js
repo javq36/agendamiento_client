@@ -1,4 +1,3 @@
-import { StepContext } from "@mui/material";
 import { useState } from "react";
 
 export function useLocalStorage (key, initialValue){

@@ -5,6 +5,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import { useEffect } from "react";
+import Router from 'next/router'
+
 // alert
 import { AlertError, AlertSuccess } from "../helpers/AlertFunctions";
 // Slider o carrousel responsive
@@ -47,7 +49,9 @@ function index() {
     resolver: yupResolver(formularioSchema),
   });
   const [usuario, setusuario] = useLocalStorage('usuario', '');
-  console.log(usuario);
+  if (usuario) {
+    console.log(usuario);
+  }
   const [tiposervicio, setTiposervicio] = React.useState("");
   const [tipoajuste, setTipoajuste] = React.useState("");
   const [tiposucursal, setTipsucursal] = React.useState("");
@@ -112,6 +116,7 @@ function index() {
         setusuario(data);
         alertmensagge = "Prueba de Sucess";
         AlertSuccess(alertmensagge);
+        Router.push('/calendario')
       }
     }
   };
@@ -119,6 +124,10 @@ function index() {
   // este es el search, la funcion corre despues de darle al boton buscar
   const formSearchHandler = async (data) => {
     var bplaca = document.getElementById("placa").value;
+
+    if (usuario) {
+      console.log("hay un usuario guardado")
+    }
     // validamos el tamaño
     if (bplaca.length > 5 && bplaca.length < 8) {
       // validamos la respuesta
@@ -169,7 +178,6 @@ function index() {
           </Paper>
         </motion.div>
       </Container>
-
       <Container maxWidth="sm" sx={{ marginBottom: 20, overflow: "hidden" }}>
         <motion.div
           animate={{ y: [4000, 0], opacity: 2 }}

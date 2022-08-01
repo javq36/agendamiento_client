@@ -236,3 +236,9 @@ ul{
   margin-right: 0;
   text-align: justify;
 }
+
+
+
+.css-3nejl.Appointment-appointment::hover{
+  background-color: #2f335e;
+}
