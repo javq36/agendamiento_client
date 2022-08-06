@@ -56,14 +56,15 @@ export function Navbar() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.3
       }
     }
   }
 
   const itemanimado = {
     hidden: { opacity: 0, scale: 0 },
-    show: { opacity: 1, scale: 1, transition: { type: "spring", duration: 1 } 
+    show: { opacity: 1, scale: 1, animate:{ rotate: 180 },
+    transition:{ duration: 1 }, 
     }
   }
 
@@ -72,12 +73,12 @@ export function Navbar() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, duration: 200 }}
+      initial={{ opacity: 0, duration: 2}}
       animate={{ y: [-2000 , 0], opacity: 2 }}
-      transition={{ type: "spring", stiffness: 100, duration: 3 }}>
+      transition={{ type: "spring", stiffness: 100, duration: 3}}>
       <Box sx={{ display: 'flex', paddingBottom: 10 }}>
-        <Drawer variant="permanent" anchor="top">
-          <AppBar component="nav" style={{ color: "black", backgroundColor: "#FDFEFE", paddingTop: 6 }} sx={{ zIndex: 0 }}>
+        <Drawer variant="permanent" anchor="top" sx={{zIndex: 2147483647}}>
+          <AppBar component="nav" style={{ color: "black", backgroundColor: "#FDFEFE", paddingTop: 6, zIndex: 2147483647}} sx={{ zIndex: 2147483647 }}>
             <Container maxWidth="md">
               <Toolbar>
                 <div>
@@ -137,7 +138,7 @@ export function Navbar() {
             }}
             sx={{
               display: { xs: 'block', sm: 'none' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', height: drawerHeight, width: drawerWidth, marginTop: 7.5, backgroundColor: '#ECF0F1' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', height: drawerHeight, width: drawerWidth, marginTop: 7.5, backgroundColor: '#ECF0F1', zIndex: 2147483647 },
             }}
           >
             <Box onClick={handleDrawerToggle}>
