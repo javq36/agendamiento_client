@@ -37,8 +37,9 @@ import {
 } from "../constants/usStates";
 // localstorage
 import { useLocalStorage } from "../constants/useLocalStorage";
+import { useValidateSelect } from "../hooks/useValidateSelect";
 
-function index() {
+const index = () => {
   const {
     register,
     handleSubmit,
@@ -47,56 +48,39 @@ function index() {
   } = useForm({
     resolver: yupResolver(formularioSchema),
   });
+
+  const {
+    error: error1,
+    errormessage: error1message,
+    validateSelector,
+  } = useValidateSelect();
+  const {
+    error: error2,
+    errormessage: errormessage2,
+    validateSelector: validateSelector2,
+  } = useValidateSelect();
+  const {
+    error: error3,
+    errormessage: errormessage3,
+    validateSelector: validateSelector3,
+  } = useValidateSelect();
+
   const [usuario, setusuario] = useLocalStorage("usuario", "");
   const [tiposervicio, setTiposervicio] = React.useState("");
   const [tipoajuste, setTipoajuste] = React.useState("");
   const [tiposucursal, setTipsucursal] = React.useState("");
-  // errores de los select
-  const [error1, setError1] = React.useState(false);
-  const [error2, setError2] = React.useState(false);
-  const [error3, setError3] = React.useState(false);
-  // mensaje de error para el helptext
-  const [error1message, setError1message] = React.useState("");
-  const [error2message, setError2message] = React.useState("");
-  const [error3message, setError3message] = React.useState("");
 
   const [oculto, setOculto] = React.useState("none");
-  const [displayboton, setDisplayboton] = React.useState("true");
+  const [displayboton, setDisplayboton] =
+    React.useState("true"); /* Corregir a formato booleano */
   const [isView, setIsView] = React.useState("hidden");
   // mensaje base de los alerts de sweety alert
   const alertmensagge = "";
 
-  const validateSelector = () => {
-    if (tiposervicio === "") {
-      setError1(true);
-      setError1message("Por favor ingrese el Tipo del Servicio");
-    } else {
-      setError1(false);
-      setError1message("");
-    }
-  };
-  const validateSelector2 = () => {
-    if (tipoajuste === "") {
-      setError2(true);
-      setError2message("Por favor ingrese el Tipo de Ajuste");
-    } else {
-      setError2(false);
-      setError2message("");
-    }
-  };
-  const validateSelector3 = () => {
-    if (tiposucursal === "") {
-      setError3(true);
-      setError3message("Por favor ingrese la Sucursal");
-    } else {
-      setError3(false);
-      setError3message("");
-    }
-  };
   const Validations = () => {
-    validateSelector();
-    validateSelector2();
-    validateSelector3();
+    validateSelector("Por favor ingrese el Tipo del Servicio", tiposervicio);
+    validateSelector2("Por favor ingrese el Tipo de ajuste", tipoajuste);
+    validateSelector3("Por favor ingrese el Tipo de sucursal", tiposucursal);
   };
   // al momento de precionar el boton hace esto
   const formSubmitHandler = async (data) => {
@@ -319,7 +303,7 @@ function index() {
                     label={"Tipo de Ajuste"}
                     type={"select"}
                     errors={!!error2}
-                    helperText={error2message}
+                    helperText={errormessage2}
                     defaultValue={""}
                     options={listtipoajuste}
                     onChange={handleChange2}
@@ -333,7 +317,7 @@ function index() {
                     label={"Sucursal"}
                     type={"select"}
                     errors={!!error3}
-                    helperText={error3message}
+                    helperText={errormessage3}
                     defaultValue={""}
                     options={listsucursal}
                     onChange={handleChange3}
@@ -366,6 +350,6 @@ function index() {
       <Footer />
     </div>
   );
-}
+};
 
 export default index;
