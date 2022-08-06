@@ -239,6 +239,152 @@ ul{
 
 
 
-.css-3nejl.Appointment-appointment::hover{
-  background-color: #2f335e;
+.CitaPersona  {
+  background-color: #2f335e !important;
+ 
+}
+tr{
+  text-align: center;
+}
+.Appointment-appointment .Appointment-clickableAppointment{
+  background-color: #000000 !important;
+}
+
+.Indicator-nowIndicator{
+  background-color: #d40505 !important;
+}
+
+.Cell.dayView{
+  text-align: center !important;
+  align-items: center;
+}
+
+.introjs-tooltip{
+  box-shadow: 14px 17px 30px -9px rgba(0,0,0,0.1) !important;
+  border: 0 !important;
+  border-radius: 20px !important;
+}
+.introjs-tooltiptext{
+  padding: 18px !important;
+}
+.introjs-tooltip-header{
+  margin-top: 20px;
+}
+.introjs-helperNumberLayer{
+  padding-top: 0;
+}
+.introjs-helperLayer{
+  border-radius: 10px !important;
+  box-shadow: rgb(33 33 33 / 50%) 0px 0px 0px 5000px !important;
+}
+.introjs-progressbar  {
+  background-color: rgb(48, 50, 163) !important;
+}
+.introjs-tooltipbuttons{
+  background-color: #E5E7E9;
+  border-radius: 10px !important;
+}
+.introjs-tooltipbuttons a{
+  background-color: black;
+  color: white;
+  text-shadow: none;
+}
+.introjs-button:hover{
+  background-color: rgb(48, 50, 163) !important;
+  color: white !important;
+}
+.introjs-button:focus{
+  background-color: rgb(48, 50, 163) !important;
+  color: white !important;
+}
+.introjs-arrow.left{
+  top: 80px !important;
+}
+.Appointment-shadedAppointment{
+  background-color: #dc483793 !important;
+}
+
+.Cell-shadedCell{
+  background-color: #EBEDEF !important;
+}
+.errorclass  {
+  background-color: #dc3741 !important;
+  background-image: none;
+}
+
+.Content-lens {
+  display: none;
+}
+
+.Header-head{
+  background-color: #000000ca !important;
+  
+}
+.Header-head svg{
+  fill: white;
+}
+.Content-contentContainer {
+  margin-left: 30px;
+  height: 0;
+  margin-bottom: 20px;
+}
+.css-vr9er9-MuiModal-root-MuiDrawer-root .Overlay-absolutePosition{
+  position: 0;
+}
+.OpenButton-textButton{
+  color: rgb(0, 0, 0) !important;
+}
+.SaveButton-button{
+  background-color: #000000ca  !important;
+  color: white;
+}
+.Mui-disabled {
+  color: white;
+  background-color: #0000002d !important;
+}
+.DeleteButton-button{
+  display: block;
+}
+.CancelButton-button{
+  margin-left: 10px;
+}
+.Layout-line{
+  display: block;
+}
+.Toolbar-toolbar {
+  background-color: #EBEDEF;
+}
+
+.Layout-popover{
+  width: 270px !important;
+}
+.Root-root .MuiSvgIcon-root {
+  fill: #242c8f;
+}
+.TodayButton-button , .TodayButton-button:hover{
+  background-color: #000000ca ;
+  color: white;
+  border-radius: 5px;
+}
+.css-1rit21i-MuiInputBase-root-MuiOutlinedInput-root .Switcher-input{
+  padding-right: 0;
+  text-transform: none;
+  padding: 10px;
+  background-color: #000000ca ;
+  color: white;
+}
+.MuiSelect-icon{
+  fill: white;
+}
+.Layout-timeScaleContainer{
+  width: 20px !important;
+  margin-left: 5px;
+}
+.TitleCell-content{
+  width: 55px !important;
+  margin-left: 5px;
+}
+.containerro {
+  padding-left: 0.6rem !important;
+  padding-right: 0.6rem !important;
 }

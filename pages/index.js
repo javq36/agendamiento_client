@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import { useEffect } from "react";
-import Router from 'next/router'
+import Router from "next/router";
 
 // alert
 import { AlertError, AlertSuccess } from "../helpers/AlertFunctions";
@@ -36,8 +36,7 @@ import {
   listtipoajuste,
 } from "../constants/usStates";
 // localstorage
-import { useLocalStorage } from  "../constants/useLocalStorage";
-
+import { useLocalStorage } from "../constants/useLocalStorage";
 
 function index() {
   const {
@@ -48,10 +47,7 @@ function index() {
   } = useForm({
     resolver: yupResolver(formularioSchema),
   });
-  const [usuario, setusuario] = useLocalStorage('usuario', '');
-  if (usuario) {
-    console.log(usuario);
-  }
+  const [usuario, setusuario] = useLocalStorage("usuario", "");
   const [tiposervicio, setTiposervicio] = React.useState("");
   const [tipoajuste, setTipoajuste] = React.useState("");
   const [tiposucursal, setTipsucursal] = React.useState("");
@@ -116,7 +112,7 @@ function index() {
         setusuario(data);
         alertmensagge = "Prueba de Sucess";
         AlertSuccess(alertmensagge);
-        Router.push('/calendario')
+        Router.push("/calendario");
       }
     }
   };
@@ -125,9 +121,6 @@ function index() {
   const formSearchHandler = async (data) => {
     var bplaca = document.getElementById("placa").value;
 
-    if (usuario) {
-      console.log("hay un usuario guardado")
-    }
     // validamos el tamaño
     if (bplaca.length > 5 && bplaca.length < 8) {
       // validamos la respuesta
@@ -157,10 +150,10 @@ function index() {
     setTipsucursal(event.target.value);
   };
 
-
   return (
     <div>
       <Navbar />
+
       <Container maxWidth="md" style={{ marginBottom: 10 }}>
         <motion.div
           animate={{

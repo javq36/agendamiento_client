@@ -19,3 +19,30 @@ export const AlertSuccess = (alertmensagge) => {
     confirmButtonText: "Ok",
   });
 };
+export const AlertInfo = (alertmensagge) => {
+  Swal.fire({
+    title: "Recuerda..",
+    text: alertmensagge,
+    icon: "info",
+    confirmButtonColor: "#2f335e",
+    confirmButtonText: "Ok",
+  });
+};
+export const AlertQuestion = (alertmensagge) => {
+  Swal.fire({
+    title: "¡Espera!",
+    text: alertmensagge,
+    showDenyButton: true,
+    confirmButtonText: "Guardar",
+    denyButtonText: `No guardar`,
+    icon: "question",
+    confirmButtonColor: "#2f335e",
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      AlertSuccess("Los cambios se guardaron con Exito!");
+    } else if (result.isDenied) {
+      AlertInfo("No se guardo ningun cambio, Por favor seleccione otra casilla");
+    }
+  });
+};
