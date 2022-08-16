@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/calendario": [
+    "/contactanos": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/calendario.js"
+      "static/chunks/pages/contactanos.js"
     ]
   },
   "ampFirstPages": []

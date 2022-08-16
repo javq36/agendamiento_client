@@ -18,6 +18,9 @@ import { Footer } from "../components/Footer";
 // formulario
 import { TextFieldInput } from "../components/shared/TextInput";
 import { SelectFieldInputOnChange } from "../components/shared/SelectInput";
+// Slider o carrousel responsive
+import Calendar from "../components/Calendar/Calendar";
+
 // controladores y validaciones del formulario
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -37,67 +40,48 @@ import {
 } from "../constants/usStates";
 // localstorage
 import { useLocalStorage } from "../constants/useLocalStorage";
+import { useValidateSelect } from "../hooks/useValidateSelect";
 
 function index() {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(formularioSchema),
   });
+  const {
+    error: error1,
+    errormessage: error1message,
+    validateSelector,
+  } = useValidateSelect();
+  const {
+    error: error2,
+    errormessage: errormessage2,
+    validateSelector: validateSelector2,
+  } = useValidateSelect();
+  const {
+    error: error3,
+    errormessage: errormessage3,
+    validateSelector: validateSelector3,
+  } = useValidateSelect();
+
   const [usuario, setusuario] = useLocalStorage("usuario", "");
   const [tiposervicio, setTiposervicio] = React.useState("");
   const [tipoajuste, setTipoajuste] = React.useState("");
   const [tiposucursal, setTipsucursal] = React.useState("");
-  // errores de los select
-  const [error1, setError1] = React.useState(false);
-  const [error2, setError2] = React.useState(false);
-  const [error3, setError3] = React.useState(false);
-  // mensaje de error para el helptext
-  const [error1message, setError1message] = React.useState("");
-  const [error2message, setError2message] = React.useState("");
-  const [error3message, setError3message] = React.useState("");
-
   const [oculto, setOculto] = React.useState("none");
   const [displayboton, setDisplayboton] = React.useState("true");
   const [isView, setIsView] = React.useState("hidden");
   // mensaje base de los alerts de sweety alert
   const alertmensagge = "";
 
-  const validateSelector = () => {
-    if (tiposervicio === "") {
-      setError1(true);
-      setError1message("Por favor ingrese el Tipo del Servicio");
-    } else {
-      setError1(false);
-      setError1message("");
-    }
-  };
-  const validateSelector2 = () => {
-    if (tipoajuste === "") {
-      setError2(true);
-      setError2message("Por favor ingrese el Tipo de Ajuste");
-    } else {
-      setError2(false);
-      setError2message("");
-    }
-  };
-  const validateSelector3 = () => {
-    if (tiposucursal === "") {
-      setError3(true);
-      setError3message("Por favor ingrese la Sucursal");
-    } else {
-      setError3(false);
-      setError3message("");
-    }
-  };
   const Validations = () => {
-    validateSelector();
-    validateSelector2();
-    validateSelector3();
+    validateSelector("Por favor ingrese el Tipo del Servicio", tiposervicio);
+    validateSelector2("Por favor ingrese el Tipo de Ajuste", tipoajuste);
+    validateSelector3("Por favor ingrese La Sucursal", tiposucursal);
   };
+
   // al momento de precionar el boton hace esto
   const formSubmitHandler = async (data) => {
     if (Object.keys(errors).length === 0) {
@@ -110,7 +94,7 @@ function index() {
         console.log(tiposucursal);
       } else {
         setusuario(data);
-        alertmensagge = "Prueba de Sucess";
+        alertmensagge = "¡Enviado con Exito!";
         AlertSuccess(alertmensagge);
         Router.push("/calendario");
       }
@@ -120,7 +104,6 @@ function index() {
   // este es el search, la funcion corre despues de darle al boton buscar
   const formSearchHandler = async (data) => {
     var bplaca = document.getElementById("placa").value;
-
     // validamos el tamaño
     if (bplaca.length > 5 && bplaca.length < 8) {
       // validamos la respuesta
@@ -153,216 +136,227 @@ function index() {
   return (
     <div>
       <Navbar />
-
-      <Container maxWidth="md" style={{ marginBottom: 10 }}>
-        <motion.div
-          animate={{
-            x: [-4000, 0],
-            opacity: 2,
-            boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.2)",
-          }}
-          transition={{ type: "spring", stiffness: 100, duration: 4 }}
-        >
-          <Paper
-            elevation={4}
-            style={{ marginTop: 15, backgroundColor: "black" }}
-          >
-            <Slider />
-          </Paper>
-        </motion.div>
-      </Container>
-      <Container maxWidth="sm" sx={{ marginBottom: 20, overflow: "hidden" }}>
-        <motion.div
-          animate={{ y: [4000, 0], opacity: 2 }}
-          transition={{ type: "spring", stiffness: 100, duration: 4 }}
-        >
+      <Container sx={{ minHeight: "100vh" }}>
+        <Container maxWidth="md" style={{ marginBottom: 10 }}>
           <motion.div
-            layout
-            transition={{
-              type: "spring",
-              stiffness: 500,
-              layout: { duration: 0.5 },
-              default: { ease: "linear" },
+            animate={{
+              x: [-4000, 0],
+              opacity: 2,
+              boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.2)",
             }}
+            transition={{ type: "spring", stiffness: 100, duration: 4 }}
           >
             <Paper
               elevation={4}
-              style={{
-                overflow: "hidden",
-                marginTop: 15,
-                marginBottom: 20,
-                boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)",
-              }}
+              style={{ marginTop: 15, backgroundColor: "black" }}
             >
-              <h3
-                style={{
-                  textAlign: "center",
-                  paddingTop: "10px",
-                  marginBottom: "8px",
-                }}
-              >
-                Agenda tu Cita
-              </h3>
-
-              <TextFieldInput
-                id="placa"
-                name={"placa"}
-                control={control}
-                label={"Numero de Placa"}
-                type={"text"}
-                errors={!!errors.placa}
-                helperText={errors.placa ? errors.placa?.message : null}
-                defaultValue={""}
-                style={{ marginBottom: "0px", paddingBottom: "0px" }}
-                endIcon={<SendIcon />}
-              />
-
-              <Container maxWidth="sm" style={{ display: displayboton }}>
-                <Button
-                  onClick={formSearchHandler}
-                  variant="contained"
-                  style={{
-                    width: "100%",
-                    marginBottom: 12,
-                    backgroundColor: "#2f335e",
-                  }}
-                  endIcon={<SendIcon />}
-                >
-                  Buscar
-                </Button>
-              </Container>
-
-              <motion.ul
-                variants={container}
-                layout
-                animate={isView}
-                className={oculto}
-              >
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput
-                    name={"ncedula"}
-                    control={control}
-                    label={"Numero de Cédula"}
-                    type={"text"}
-                    errors={!!errors.ncedula}
-                    helperText={errors.ncedula ? errors.ncedula?.message : null}
-                    defaultValue={""}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput
-                    name={"nombreyapellido"}
-                    control={control}
-                    label={"Nombre y Apellido"}
-                    type={"text"}
-                    errors={!!errors.nombreyapellido}
-                    helperText={
-                      errors.nombreyapellido
-                        ? errors.nombreyapellido?.message
-                        : null
-                    }
-                    defaultValue={""}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput
-                    name={"celular"}
-                    control={control}
-                    label={"Celular"}
-                    type={"text"}
-                    errors={!!errors.celular}
-                    helperText={errors.celular ? errors.celular?.message : null}
-                    defaultValue={""}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado2}>
-                  <TextFieldInput
-                    name={"marca"}
-                    control={control}
-                    label={"Marca"}
-                    type={"text"}
-                    errors={!!errors.marca}
-                    helperText={errors.marca ? errors.marca?.message : null}
-                    defaultValue={""}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <TextFieldInput
-                    name={"modelov"}
-                    control={control}
-                    label={"Modelo del Vehículo"}
-                    type={"text"}
-                    errors={!!errors.modelov}
-                    helperText={errors.modelov ? errors.modelov?.message : null}
-                    defaultValue={""}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado2} onBlur={validateSelector}>
-                  <SelectFieldInputOnChange
-                    name={"tipodeservicio"}
-                    control={control}
-                    label={"Tipo de Servicio"}
-                    type={"select"}
-                    errors={!!error1}
-                    helperText={error1message}
-                    defaultValue={""}
-                    options={listtiposervicio}
-                    onChange={handleChange}
-                    value={tiposervicio}
-                  ></SelectFieldInputOnChange>
-                </motion.li>
-                <motion.li variants={itemanimado} onBlur={validateSelector2}>
-                  <SelectFieldInputOnChange
-                    id="tipoajuste"
-                    name={"tipodeajuste"}
-                    control={control}
-                    label={"Tipo de Ajuste"}
-                    type={"select"}
-                    errors={!!error2}
-                    helperText={error2message}
-                    defaultValue={""}
-                    options={listtipoajuste}
-                    onChange={handleChange2}
-                    value={tipoajuste}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado2} onBlur={validateSelector3}>
-                  <SelectFieldInputOnChange
-                    name={"sucursal"}
-                    control={control}
-                    label={"Sucursal"}
-                    type={"select"}
-                    errors={!!error3}
-                    helperText={error3message}
-                    defaultValue={""}
-                    options={listsucursal}
-                    onChange={handleChange3}
-                    value={tiposucursal}
-                  />
-                </motion.li>
-                <motion.li variants={itemanimado}>
-                  <Container maxWidth="sm">
-                    <Button
-                      onClick={handleSubmit(formSubmitHandler)}
-                      onFocus={Validations}
-                      variant="contained"
-                      style={{
-                        width: "100%",
-                        marginBottom: 12,
-                        backgroundColor: "#2f335e",
-                      }}
-                      endIcon={<SendIcon />}
-                    >
-                      Enviar
-                    </Button>
-                  </Container>
-                </motion.li>
-              </motion.ul>
+              <Slider />
             </Paper>
           </motion.div>
-        </motion.div>
-      </Container>
+        </Container>
+        <Container
+          maxWidth="sm"
+          sx={{
+            overflow: "hidden",
+          }}
+        >
+          <motion.div
+            animate={{ y: [4000, 0], opacity: 2 }}
+            transition={{ type: "spring", stiffness: 100, duration: 4 }}
+          >
+            <motion.div
+              layout
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                layout: { duration: 0.5 },
+                default: { ease: "linear" },
+              }}
+            >
+              <Paper
+                elevation={4}
+                style={{
+                  overflow: "hidden",
+                  marginTop: 15,
+                  marginBottom: 20,
+                  boxShadow: "10px 10px 0 rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <h3
+                  style={{
+                    textAlign: "center",
+                    paddingTop: "10px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  Agenda tu Cita
+                </h3>
 
+                <TextFieldInput
+                  id="placa"
+                  name={"placa"}
+                  control={control}
+                  label={"Numero de Placa"}
+                  type={"text"}
+                  errors={!!errors.placa}
+                  helperText={errors.placa ? errors.placa?.message : null}
+                  defaultValue={""}
+                  style={{ marginBottom: "0px", paddingBottom: "0px" }}
+                  endIcon={<SendIcon />}
+                />
+
+                <Container maxWidth="sm" style={{ display: displayboton }}>
+                  <Button
+                    onClick={formSearchHandler}
+                    variant="contained"
+                    style={{
+                      width: "100%",
+                      marginBottom: 12,
+                      backgroundColor: "#2f335e",
+                    }}
+                    endIcon={<SendIcon />}
+                  >
+                    Buscar
+                  </Button>
+                </Container>
+
+                <motion.ul
+                  variants={container}
+                  layout
+                  animate={isView}
+                  className={oculto}
+                >
+                  <motion.li variants={itemanimado}>
+                    <TextFieldInput
+                      name={"ncedula"}
+                      control={control}
+                      label={"Numero de Cédula"}
+                      type={"text"}
+                      errors={!!errors.ncedula}
+                      helperText={
+                        errors.ncedula ? errors.ncedula?.message : null
+                      }
+                      defaultValue={""}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado2}>
+                    <TextFieldInput
+                      name={"nombreyapellido"}
+                      control={control}
+                      label={"Nombre y Apellido"}
+                      type={"text"}
+                      errors={!!errors.nombreyapellido}
+                      helperText={
+                        errors.nombreyapellido
+                          ? errors.nombreyapellido?.message
+                          : null
+                      }
+                      defaultValue={""}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado}>
+                    <TextFieldInput
+                      name={"celular"}
+                      control={control}
+                      label={"Celular"}
+                      type={"text"}
+                      errors={!!errors.celular}
+                      helperText={
+                        errors.celular ? errors.celular?.message : null
+                      }
+                      defaultValue={""}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado2}>
+                    <TextFieldInput
+                      name={"marca"}
+                      control={control}
+                      label={"Marca"}
+                      type={"text"}
+                      errors={!!errors.marca}
+                      helperText={errors.marca ? errors.marca?.message : null}
+                      defaultValue={""}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado}>
+                    <TextFieldInput
+                      name={"modelov"}
+                      control={control}
+                      label={"Modelo del Vehículo"}
+                      type={"text"}
+                      errors={!!errors.modelov}
+                      helperText={
+                        errors.modelov ? errors.modelov?.message : null
+                      }
+                      defaultValue={""}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado2} onBlur={validateSelector}>
+                    <SelectFieldInputOnChange
+                      name={"tipodeservicio"}
+                      control={control}
+                      label={"Tipo de Servicio"}
+                      type={"select"}
+                      errors={!!error1}
+                      helperText={error1message}
+                      defaultValue={""}
+                      options={listtiposervicio}
+                      onChange={handleChange}
+                      value={tiposervicio}
+                    ></SelectFieldInputOnChange>
+                  </motion.li>
+                  <motion.li variants={itemanimado} onBlur={validateSelector2}>
+                    <SelectFieldInputOnChange
+                      id="tipoajuste"
+                      name={"tipodeajuste"}
+                      control={control}
+                      label={"Tipo de Ajuste"}
+                      type={"select"}
+                      errors={!!error2}
+                      helperText={errormessage2}
+                      defaultValue={""}
+                      options={listtipoajuste}
+                      onChange={handleChange2}
+                      value={tipoajuste}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado2} onBlur={validateSelector3}>
+                    <SelectFieldInputOnChange
+                      name={"sucursal"}
+                      control={control}
+                      label={"Sucursal"}
+                      type={"select"}
+                      errors={!!error3}
+                      helperText={errormessage3}
+                      defaultValue={""}
+                      options={listsucursal}
+                      onChange={handleChange3}
+                      value={tiposucursal}
+                    />
+                  </motion.li>
+                  <motion.li variants={itemanimado}>
+                    <Container maxWidth="sm">
+                      <Button
+                        onClick={handleSubmit(formSubmitHandler)}
+                        onFocus={Validations}
+                        variant="contained"
+                        style={{
+                          width: "100%",
+                          marginBottom: 12,
+                          backgroundColor: "#2f335e",
+                        }}
+                        endIcon={<SendIcon />}
+                      >
+                        Enviar
+                      </Button>
+                    </Container>
+                  </motion.li>
+                </motion.ul>
+              </Paper>
+            </motion.div>
+          </motion.div>
+        </Container>
+      </Container>
       <Footer />
     </div>
   );
